@@ -1,25 +1,25 @@
-import{a as u,S as m,i as y}from"./assets/vendor-BBSqv8W6.js";(function(){const s=document.createElement("link").relList;if(s&&s.supports&&s.supports("modulepreload"))return;for(const e of document.querySelectorAll('link[rel="modulepreload"]'))n(e);new MutationObserver(e=>{for(const t of e)if(t.type==="childList")for(const i of t.addedNodes)i.tagName==="LINK"&&i.rel==="modulepreload"&&n(i)}).observe(document,{childList:!0,subtree:!0});function r(e){const t={};return e.integrity&&(t.integrity=e.integrity),e.referrerPolicy&&(t.referrerPolicy=e.referrerPolicy),e.crossOrigin==="use-credentials"?t.credentials="include":e.crossOrigin==="anonymous"?t.credentials="omit":t.credentials="same-origin",t}function n(e){if(e.ep)return;e.ep=!0;const t=r(e);fetch(e.href,t)}})();u.defaults.baseURL="https://pixabay.com/api/";const l=document.querySelector(".app-form"),d=document.querySelector(".gallery"),p=document.querySelector(".btn-prev"),f=document.querySelector(".btn-next"),g=new m(".gallery a",{}),h=10;let a=1;const c=async()=>{d.innerHTML="";const o=l.elements.search.value;console.log(o),await u.get("https://pixabay.com/api/",{params:{key:"49373653-d22f76e72713087fcf9bb4de1",q:o,image_type:"photo",orientation:"horizontal",safesearch:!0,page:a,per_page:h}}).then(s=>{const r=s.data.hits;console.log(r.length);const n=s.data.totalHits;r.length===0?y.error({title:"Error",message:"Sorry, there are no images matching your search query. Please try again!",position:"topRight"}):(r.forEach(e=>{d.innerHTML+=` 
+import{a as f,S as g,i as p}from"./assets/vendor-BBSqv8W6.js";(function(){const a=document.createElement("link").relList;if(a&&a.supports&&a.supports("modulepreload"))return;for(const e of document.querySelectorAll('link[rel="modulepreload"]'))s(e);new MutationObserver(e=>{for(const t of e)if(t.type==="childList")for(const l of t.addedNodes)l.tagName==="LINK"&&l.rel==="modulepreload"&&s(l)}).observe(document,{childList:!0,subtree:!0});function n(e){const t={};return e.integrity&&(t.integrity=e.integrity),e.referrerPolicy&&(t.referrerPolicy=e.referrerPolicy),e.crossOrigin==="use-credentials"?t.credentials="include":e.crossOrigin==="anonymous"?t.credentials="omit":t.credentials="same-origin",t}function s(e){if(e.ep)return;e.ep=!0;const t=n(e);fetch(e.href,t)}})();f.defaults.baseURL="https://pixabay.com/api/";const c=document.querySelector(".app-form"),h=document.querySelector(".gallery"),m=document.querySelector(".btn-prev"),d=document.querySelector(".btn-next"),v=new g(".gallery a",{}),y=10;let o=1,i="";const u=async()=>{if(!i){p.warning({title:"Uyarı",message:"Lütfen bir arama terimi girin.",position:"topRight"});return}await f.get("https://pixabay.com/api/",{params:{key:"49373653-d22f76e72713087fcf9bb4de1",q:i,image_type:"photo",orientation:"horizontal",safesearch:!0,page:o,per_page:y}}).then(r=>{const a=r.data.hits;console.log(a.length);const n=r.data.totalHits;a.length===0?(d.style.display="none",p.error({title:"Error",message:"Sorry, there are no images matching your search query. Please try again!",position:"topRight"})):(a.forEach(s=>{h.innerHTML+=` 
                     <li class="gallery-item">
-                        <a href="${e.largeImageURL}" class="image">
-                        <img src="${e.webformatURL}" width="360" height="200" alt="${e.tags}"/>
+                        <a href="${s.largeImageURL}" class="image">
+                        <img src="${s.webformatURL}" width="360" height="200" alt="${s.tags}"/>
                         </a>
                         <div class="content">
                             <div class="info">
                                 <h5 class="key">Likes</h5>
-                                <p class="value">${e.likes}</p>
+                                <p class="value">${s.likes}</p>
                             </div>
                             <div class="info">
                                 <h5 class="key">Views</h5>
-                                <p class="value">${e.views}</p>
+                                <p class="value">${s.views}</p>
                             </div>
                             <div class="info">
                                 <h5 class="key">Comments</h5>
-                                <p class="value">${e.comments}</p>
+                                <p class="value">${s.comments}</p>
                             </div>
                             <div class="info">
                                 <h5 class="key">Downloads</h5>
-                                <p class="value">${e.downloads}</p>
+                                <p class="value">${s.downloads}</p>
                             </div>
                         </div>
-                    </li>`}),g.refresh(),v(n))}).catch(s=>{console.error(s)})};l.addEventListener("submit",o=>{o.preventDefault(),c(),l.elements.search.value=""});const v=o=>{const s=Math.ceil(o/h);f.style.display=a<s?"block":"none",p.style.display=a>1?"block":"none"};f.addEventListener("click",()=>{a++,c()});p.addEventListener("click",()=>{a--,c()});
+                    </li>`}),v.refresh(),b(n))}).catch(r=>{console.error(r)})};c.addEventListener("submit",r=>{r.preventDefault(),i=c.elements.search.value.trim(),o=1,h.innerHTML="",u(),c.elements.search.value=""});const b=r=>{const a=Math.ceil(r/y);d.style.display=o<a?"block":"none",m.style.display=o>1?"block":"none"};d.addEventListener("click",()=>{i&&(o++,u())});m.addEventListener("click",()=>{!i||o===1||(o--,u())});
 //# sourceMappingURL=index.js.map
