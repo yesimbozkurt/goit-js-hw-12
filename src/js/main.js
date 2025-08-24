@@ -10,39 +10,42 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 
 
 // my API key : 49373653-d22f76e72713087fcf9bb4de1
+axios.defaults.baseURL = 'https://pixabay.com/api/';
 
 const form = document.querySelector(".app-form");
 const gallery = document.querySelector(".gallery");
+const btnContainer = document.querySelector('.btn-container');
+const btn = document.querySelector('.btn');
 
-form.addEventListener("submit", (e) => {
+const postsPerPage = 10;
+let currentPage = 1;
+let totalData = 100;
+const totalPages = Math.ceil(totalData / postsPerPage); // 100 = datadaki veri sayısı { res.data.length }
 
-    e.preventDefault(); // Prevent the default form submission. formun default davranışını engelle
-    gallery.innerHTML = ""; // Clear the gallery before adding new images. her submitte galeriyi temizle
-    
-    const searchValue = form.elements.search.value;
 
-    axios.get('https://pixabay.com/api/', {
-        params: {
-            key: '49373653-d22f76e72713087fcf9bb4de1',
-            q: searchValue,
-            image_type: 'photo',
-            orientation: 'horizontal',
-            safesearch: true,
-        },
-    })
-        .then((response) => {
-            console.log(response);
-            const images = response.data.hits;
-            if (images.length === 0) {
-                iziToast.error({
-                    title: "Error",
-                    message: "Sorry, there are no images matching your search query. Please try again!",
-                    position: "topRight",
-                });
-            } else {
-                images.forEach(img => {
-                    console.log(img);
-                    gallery.innerHTML += ` 
+const searchValue = form.elements.search.value;
+const fetchData = async () => await axios.get('https://pixabay.com/api/', {
+    params: {
+        key: '49373653-d22f76e72713087fcf9bb4de1',
+        q: searchValue,
+        image_type: 'photo',
+        orientation: 'horizontal',
+        safesearch: true,
+    },
+})
+    .then((response) => {
+        console.log(response.data.hits.length);
+        const images = response.data.hits;
+        if (images.length === 0) {
+            iziToast.error({
+                title: "Error",
+                message: "Sorry, there are no images matching your search query. Please try again!",
+                position: "topRight",
+            });
+        } else {
+            images.forEach(img => {
+                console.log(img);
+                gallery.innerHTML += ` 
                     <li class="gallery-item">
                         <a href="${img.largeImageURL}" class="image">
                         <img src="${img.webformatURL}" width="360" height="200" alt="${img.tags}"/>
@@ -66,14 +69,25 @@ form.addEventListener("submit", (e) => {
                             </div>
                         </div>
                     </li>`;
-                });
-                const lightbox = new SimpleLightbox(".gallery a", {
-                
-                });
-                lightbox.refresh();
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+            });
+            const lightbox = new SimpleLightbox(".gallery a", {
+
+            });
+            lightbox.refresh();
+        }
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
+form.addEventListener("submit", (e) => {
+
+    e.preventDefault(); // Prevent the default form submission. formun default davranışını engelle
+    gallery.innerHTML = ""; // Clear the gallery before adding new images. her submitte galeriyi temizle
+
+    const searchValue = form.elements.search.value;
+    console.log(searchValue);
+    fetchData();
 });
+
+btn.addEventListener('click', fetchData);
