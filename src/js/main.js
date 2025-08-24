@@ -7,7 +7,6 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 // my API key : 49373653-d22f76e72713087fcf9bb4de1
 axios.defaults.baseURL = 'https://pixabay.com/api/';
 
-
 const form = document.querySelector(".app-form");
 const gallery = document.querySelector(".gallery");
 const btnPrev = document.querySelector('.btn-prev');
@@ -20,7 +19,7 @@ let currentSearch = "";
 
 const fetchData = async () => {
     // gallery.innerHTML = "";
-    const searchValue = form.elements.search.value;
+    // const searchValue = form.elements.search.value;
     // console.log(searchValue);
     if (!currentSearch) {
         iziToast.warning({
@@ -47,9 +46,10 @@ const fetchData = async () => {
             console.log(images.length);
             const totalHits = response.data.totalHits;
             const totalPages = Math.ceil(totalHits / postsPerPage);
-            console.log('Toplam Sayfa:', totalPages);
-            console.log('Toplam Görüntüleme:', totalHits);
+            // console.log('Toplam Sayfa:', totalPages);
+            // console.log('Toplam Görüntüleme:', totalHits);
             if (images.length === 0) {
+                btnNext.style.display = 'none';
                 iziToast.error({
                     title: "Error",
                     message: "Sorry, there are no images matching your search query. Please try again!",
