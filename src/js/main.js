@@ -19,9 +19,9 @@ let currentPage = 1;
 let currentSearch = "";
 
 const fetchData = async () => {
-    gallery.innerHTML = "";
+    // gallery.innerHTML = "";
     const searchValue = form.elements.search.value;
-    console.log(searchValue);
+    // console.log(searchValue);
     if (!currentSearch) {
         iziToast.warning({
             title: "Uyarı",
@@ -30,21 +30,25 @@ const fetchData = async () => {
         });
         return;
     };
-    const response = await axios.get('https://pixabay.com/api/', {
-        params: {
-            key: '49373653-d22f76e72713087fcf9bb4de1',
-            q: searchValue,
-            image_type: 'photo',
-            orientation: 'horizontal',
-            safesearch: true,
-            page: currentPage,
-            per_page: postsPerPage,
-        },
-    })
+    const response = await axios
+        .get('https://pixabay.com/api/', {
+            params: {
+                key: '49373653-d22f76e72713087fcf9bb4de1',
+                q: currentSearch,
+                image_type: 'photo',
+                orientation: 'horizontal',
+                safesearch: true,
+                page: currentPage,
+                per_page: postsPerPage,
+            },
+        })
         .then((response) => {
             const images = response.data.hits;
             console.log(images.length);
             const totalHits = response.data.totalHits;
+            const totalPages = Math.ceil(totalHits / postsPerPage);
+            console.log('Toplam Sayfa:', totalPages);
+            console.log('Toplam Görüntüleme:', totalHits);
             if (images.length === 0) {
                 iziToast.error({
                     title: "Error",
@@ -92,6 +96,7 @@ form.addEventListener("submit", (e) => {
     e.preventDefault();
     currentSearch = form.elements.search.value.trim();
     currentPage = 1; // her yeni aramada sayfa 1'e dön
+    gallery.innerHTML = "";
     fetchData();
     form.elements.search.value = "";
 });
