@@ -16,12 +16,20 @@ const btnNext = document.querySelector('.btn-next');
 const lightbox = new SimpleLightbox('.gallery a', { /* options */ });
 const postsPerPage = 10;
 let currentPage = 1;
-
+let currentSearch = "";
 
 const fetchData = async () => {
     gallery.innerHTML = "";
     const searchValue = form.elements.search.value;
     console.log(searchValue);
+    if (!currentSearch) {
+        iziToast.warning({
+            title: "Uyarı",
+            message: "Lütfen bir arama terimi girin.",
+            position: "topRight",
+        });
+        return;
+    };
     const response = await axios.get('https://pixabay.com/api/', {
         params: {
             key: '49373653-d22f76e72713087fcf9bb4de1',
@@ -82,6 +90,8 @@ const fetchData = async () => {
 };
 form.addEventListener("submit", (e) => {
     e.preventDefault();
+    currentSearch = form.elements.search.value.trim();
+    currentPage = 1; // her yeni aramada sayfa 1'e dön
     fetchData();
     form.elements.search.value = "";
 });
@@ -92,11 +102,13 @@ const updateButtons = (totalHits) => {
     btnPrev.style.display = currentPage > 1 ? 'block' : 'none';
 };
 btnNext.addEventListener('click', () => {
+    if (!currentSearch) return;
     currentPage++;
     fetchData();
 });
 
 btnPrev.addEventListener('click', () => {
+    if (!currentSearch || currentPage === 1) return;
     currentPage--;
     fetchData();
 });
