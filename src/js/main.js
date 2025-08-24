@@ -10,13 +10,13 @@ axios.defaults.baseURL = 'https://pixabay.com/api/';
 
 const form = document.querySelector(".app-form");
 const gallery = document.querySelector(".gallery");
-const btnContainer = document.querySelector('.btn-container');
-const btn = document.querySelector('.btn');
-btn.style.display = 'none';
+const btnPrev = document.querySelector('.btn-prev');
+const btnNext = document.querySelector('.btn-next');
 
 const lightbox = new SimpleLightbox('.gallery a', { /* options */ });
 const postsPerPage = 10;
 let currentPage = 1;
+
 
 const fetchData = async () => {
     gallery.innerHTML = "";
@@ -36,6 +36,7 @@ const fetchData = async () => {
         .then((response) => {
             const images = response.data.hits;
             console.log(images.length);
+            const totalHits = response.data.totalHits;
             if (images.length === 0) {
                 iziToast.error({
                     title: "Error",
@@ -72,20 +73,30 @@ const fetchData = async () => {
                 });
 
                 lightbox.refresh();
+                updateButtons(totalHits);
             }
         })
         .catch((error) => {
             console.error(error);
         });
-    console.log(response);
-    btn.style.display = 'block';
 };
 form.addEventListener("submit", (e) => {
     e.preventDefault();
     fetchData();
+    form.elements.search.value = "";
 });
 
-btn.addEventListener('click', () => {
+const updateButtons = (totalHits) => {
+    const totalPages = Math.ceil(totalHits / postsPerPage);
+    btnNext.style.display = currentPage < totalPages ? 'block' : 'none';
+    btnPrev.style.display = currentPage > 1 ? 'block' : 'none';
+};
+btnNext.addEventListener('click', () => {
     currentPage++;
+    fetchData();
+});
+
+btnPrev.addEventListener('click', () => {
+    currentPage--;
     fetchData();
 });

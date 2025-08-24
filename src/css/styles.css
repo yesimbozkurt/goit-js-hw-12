@@ -8,7 +8,15 @@ body {
   user-select: none;
 }
 
-.btn {
+.btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.btn-next,
+.btn-prev {
   padding: 8px 16px;
   border-radius: 8px;
   background: rgba(78, 117, 255, 1);
